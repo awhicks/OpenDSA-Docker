@@ -1,0 +1,66 @@
+version: '3.7'
+services:
+  db:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3307:3306"
+    networks:
+      - db_network
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: opendsa
+      MYSQL_DATABASE: opendsa
+      MYSQL_USER: opendsa
+      MYSQL_PASSWORD: opendsa
+
+  opendsa-lti:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - RAILS_ENV=development
+        - ODSA_BRANCH=master
+        - LTI_BRANCH=docker-compose
+    image: opendsa/opendsa-lti:latest
+    volumes:
+      - staticvolume:/opendsa-lti/public/assets
+      - bundle:/usr/local/bundle
+      - cache:/cache # added to support windows
+    entrypoint: /opendsa-lti/docker-entrypoint.sh
+    command: ["./scripts/start.sh"]
+    networks:
+      - db_network
+      - nginx_network
+    expose:
+      - 8443
+    depends_on:
+      - db
+    environment:
+      - SPROCKETS_CACHE=/cache # added to support windows
+
+  nginx:
+    build: ./nginx
+    image: opendsa/nginx:latest
+    tty: true
+    command: [nginx-debug, '-g', 'daemon off;']
+    ports:
+      - 443:443
+    networks:
+      - nginx_network
+    volumes:
+      - staticvolume:/opendsa-lti/public/assets
+    depends_on:
+      - opendsa-lti
+
+networks:
+  db_network:
+    driver: bridge
+  nginx_network:
+    driver: bridge
+volumes:
+  db:
+  staticvolume:
+  bundle:
+  cache: # added to support windows
