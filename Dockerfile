@@ -4,8 +4,8 @@ MAINTAINER Jihane Najdi <jnajdi@vt.edu>
 
 # Default environment
 ARG RAILS_ENV='production'
-ARG ODSA_BRANCH='remove_venv'
-ARG LTI_BRANCH='docker-compose'
+ARG ODSA_BRANCH='master'
+ARG LTI_BRANCH='master'
 
 ENV TZ=America/New_York
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
