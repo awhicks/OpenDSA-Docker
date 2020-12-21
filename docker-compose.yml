@@ -16,13 +16,6 @@ services:
       MYSQL_PASSWORD: opendsa
 
   opendsa-lti:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - RAILS_ENV=development
-        - ODSA_BRANCH=master
-        - LTI_BRANCH=docker-compose
     image: opendsa/opendsa-lti:latest
     volumes:
       - staticvolume:/opendsa-lti/public/assets
@@ -41,10 +34,9 @@ services:
       - SPROCKETS_CACHE=/cache # added to support windows
 
   nginx:
-    build: ./nginx
     image: opendsa/nginx:latest
     tty: true
-    command: [nginx-debug, '-g', 'daemon off;']
+    command: [nginx, '-g', 'daemon off;']
     ports:
       - 443:443
     networks:
