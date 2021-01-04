@@ -10,10 +10,10 @@ services:
     volumes:
       - db:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: opendsa
-      MYSQL_DATABASE: opendsa
-      MYSQL_USER: opendsa
-      MYSQL_PASSWORD: opendsa
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PW}
+      - MYSQL_PASSWORD=${DB_PW}
 
   opendsa-lti:
     image: opendsa/opendsa-lti:latest
@@ -32,6 +32,7 @@ services:
       - db
     environment:
       - SPROCKETS_CACHE=/cache # added to support windows
+      - DB_PASSWORD=${DB_PW}
 
   nginx:
     image: opendsa/nginx:latest
