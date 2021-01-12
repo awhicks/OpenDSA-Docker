@@ -1,6 +1,6 @@
 production:
    email_address: smtp.gmail.com
-   email_port: 587
+   email_port: '587'
    email_domain: gmail.com
    email_user_name: opendsa.noreply@gmail.com
    email_password: ENV['EMAIL_PW']
