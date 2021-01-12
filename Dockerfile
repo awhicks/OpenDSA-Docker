@@ -42,6 +42,11 @@ RUN gem install bundler -v $BUNDLER_VERSION \
 RUN git clone https://github.com/opendsa/opendsa-lti /opendsa-lti && echo "cd /opendsa-lti" >> /root/.bashrc && cd .. && git clone https://github.com/opendsa/opendsa /opendsa
 WORKDIR /opendsa-lti
 
+COPY config/application.yml /opendsa-lti/config
+COPY config/secrets.yml /opendsa-lti/config
+COPY config/database.yml /opendsa-lti/config
+
+
 RUN pip3 install -r requirements.txt
 
 RUN bundle install

@@ -1,0 +1,7 @@
+production:
+   adapter: mysql2
+   database: ENV['DB_NAME']
+   username: ENV['DB_USER']
+   password: ENV['DB_PW']
+   host: localhost
+   strict: false
